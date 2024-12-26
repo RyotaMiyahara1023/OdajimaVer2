@@ -31,8 +31,9 @@ public class WebCam : MonoBehaviour
             
             //if()
             //webCam = new WebCamTexture(devices[selectCamera].name, (int)canvas.GetComponent<CanvasScaler>().referenceResolution.x, (int)canvas.GetComponent<CanvasScaler>().referenceResolution.y);
-            WebCamTexture webcamTextureOrg = new WebCamTexture(devices[selectCamera].name);
-            webCam = new WebCamTexture(devices[selectCamera].name, webcamTextureOrg.width, webcamTextureOrg.height);
+            //WebCamTexture webcamTextureOrg = new WebCamTexture(devices[selectCamera].name);
+            //webCam = new WebCamTexture(devices[selectCamera].name, webcamTextureOrg.width, webcamTextureOrg.height);
+            webCam = new WebCamTexture(devices[selectCamera].name);
 
             /*var w = canvas.GetComponent<RectTransform>().sizeDelta.x;
             var h = canvas.GetComponent<RectTransform>().sizeDelta.y;
@@ -42,8 +43,8 @@ public class WebCam : MonoBehaviour
             if(w >= h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
             if(w < h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);*/
 
-            var w = (float)webcamTextureOrg.width;
-            var h = (float)webcamTextureOrg.height;
+            var w = (float)webCam.width;
+            var h = (float)webCam.height;
 
             RawImage.GetComponent<AspectRatioFitter>().aspectRatio = w / h;
 
