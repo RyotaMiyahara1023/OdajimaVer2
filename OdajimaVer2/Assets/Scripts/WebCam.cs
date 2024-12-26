@@ -35,16 +35,16 @@ public class WebCam : MonoBehaviour
             //webCam = new WebCamTexture(devices[selectCamera].name, webcamTextureOrg.width, webcamTextureOrg.height);
             webCam = new WebCamTexture(devices[selectCamera].name);
 
-            /*var w = canvas.GetComponent<RectTransform>().sizeDelta.x;
+            var w = canvas.GetComponent<RectTransform>().sizeDelta.x;
             var h = canvas.GetComponent<RectTransform>().sizeDelta.y;
 
-            var hiritsu = h / w;
+            /*var hiritsu = h / w;
 
             if(w >= h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
             if(w < h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);*/
 
-            var w = (float)webCam.width;
-            var h = (float)webCam.height;
+            //var w = (float)webCam.width;
+            //var h = (float)webCam.height;
 
             RawImage.GetComponent<AspectRatioFitter>().aspectRatio = w / h;
 
