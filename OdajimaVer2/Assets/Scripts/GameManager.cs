@@ -66,13 +66,14 @@ public class GameManager : MonoBehaviour
         ex_text[0][1][5] = "その後、足の付け根にある「目」と「トンビ」をマキリで取り外していきます。\n「トンビ」はイカのくちばしのことを指します。";
         ex_text[0][1][6] = "切り取った部位は、イカ墨パスタや軟骨だけの塩辛など、別の料理に活用されるほか、業者さんが回収して肥料として再利用されます。";
 
-        ex_text[0][2] = new string[6];
-        ex_text[0][2][0] = "小田島水産では秋田杉でできた木樽を用いて塩辛づくりをしています。なぜなら、木樽特有の表面の凹凸に住みつく発酵菌が塩辛の発酵には欠かせません。";
-        ex_text[0][2][1] = "木樽に仕込んだ塩辛を1週間毎日五分程度樫の棒で突きながら、空気を含ませる攪拌作業を行います。";
-        ex_text[0][2][2] = "この攪拌作業が発酵菌に酸素を行きわたらせ、塩辛の発酵を促します。";
-        ex_text[0][2][3] = "木樽で自然発酵させることで美しい桜色の塩辛に仕上がります。";
-        ex_text[0][2][4] = "木樽ならではのまろやかで深みのある味を是非ご賞味あれ。";
-        ex_text[0][2][5] = "記念撮影のページがあるのでぜひそちらもご覧ください。";
+        ex_text[0][2] = new string[7];
+        ex_text[0][2][0] = "小田島水産では秋田杉でできた木樽を用いて塩辛づくりをしています。";
+        ex_text[0][2][1] = "なぜなら、木樽特有の表面の凹凸に住みつく発酵菌が塩辛の発酵には欠かせません。";
+        ex_text[0][2][2] = "木樽に仕込んだ塩辛を1週間毎日五分程度樫の棒で突きながら、空気を含ませる攪拌作業を行います。";
+        ex_text[0][2][3] = "この攪拌作業が発酵菌に酸素を行きわたらせ、塩辛の発酵を促します。";
+        ex_text[0][2][4] = "木樽で自然発酵させることで美しい桜色の塩辛に仕上がります。";
+        ex_text[0][2][5] = "木樽ならではのまろやかで深みのある味を是非ご賞味あれ。";
+        ex_text[0][2][6] = "記念撮影のページがあるのでぜひそちらもご覧ください。";
 
         ex_text[1] = new string[3][];
 
@@ -92,13 +93,14 @@ public class GameManager : MonoBehaviour
         ex_text[1][1][5] = "Then, the eyes and “Tombi” at the base of the legs are removed with a Makiri.\n“Tombi” refers to the beak of the squid.";
         ex_text[1][1][6] = "The cut parts are used for other dishes such as squid ink pasta and salted squid bones only, and are also collected and reused as fertilizer by the vendor.";
 
-        ex_text[1][2] = new string[6];
-        ex_text[1][2][0] = "Odajima Suisan uses wooden barrels made of Akita cedar to make salted fish. This is because the fermentation bacteria that live on the uneven surface of the wooden barrels are indispensable for the fermentation of the salted fish.";
-        ex_text[1][2][1] = "The salted fish in the wooden barrels is poked with an oak stick for about five minutes every day for a week to stir the fish and let the air in.";
-        ex_text[1][2][2] = "This stirring process allows oxygen to flow to the fermenting bacteria and promotes the fermentation of the salted fish.";
-        ex_text[1][2][3] = "The natural fermentation in the wooden barrels gives the salted fish a beautiful cherry color.";
-        ex_text[1][2][4] = "Please enjoy the mellow and deep flavor that only wooden barrels can provide.";
-        ex_text[1][2][5] = "Please take a look at the commemorative photo page.";
+        ex_text[1][2] = new string[7];
+        ex_text[1][2][0] = "Odajima Suisan uses wooden barrels made of Akita cedar to make salted fish.";
+        ex_text[1][2][1] = "This is because the fermentation bacteria that live on the uneven surface of the wooden barrels are indispensable for the fermentation of the salted fish.";
+        ex_text[1][2][2] = "The salted fish in the wooden barrels is poked with an oak stick for about five minutes every day for a week to stir the fish and let the air in.";
+        ex_text[1][2][3] = "This stirring process allows oxygen to flow to the fermenting bacteria and promotes the fermentation of the salted fish.";
+        ex_text[1][2][4] = "The natural fermentation in the wooden barrels gives the salted fish a beautiful cherry color.";
+        ex_text[1][2][5] = "Please enjoy the mellow and deep flavor that only wooden barrels can provide.";
+        ex_text[1][2][6] = "Please take a look at the commemorative photo page.";
         RenderSettings.skybox = movie.back[data.chapter + 1];
         movie.Set_Movie();
     }
@@ -326,26 +328,26 @@ public class GameManager : MonoBehaviour
         animator[2].SetFloat("Taru", 1.0f);
         audioSource.PlayDelayed(0.0000001f);
         audioSource.PlayOneShot(narration[2].narr[0]);
-        if(data.lang == 1) Explanation_subtitle.fontSize = 60;
         Explanation_subtitle.text = ex_text[data.lang][2][0];
-        yield return new WaitForSeconds(17f);
-        audioSource.PlayOneShot(narration[2].narr[1]);
-        Explanation_subtitle.fontSize = 80;
+        yield return new WaitForSeconds(8f);
         Explanation_subtitle.text = ex_text[data.lang][2][1];
+        yield return new WaitForSeconds(9f);
+        audioSource.PlayOneShot(narration[2].narr[1]);
+        Explanation_subtitle.text = ex_text[data.lang][2][2];
         yield return new WaitForSeconds(12f);
         audioSource.Stop();
         audioSource.PlayOneShot(narration[2].narr[2]);
-        Explanation_subtitle.text = ex_text[data.lang][2][2];
+        Explanation_subtitle.text = ex_text[data.lang][2][3];
         yield return new WaitForSeconds(9f);
         audioSource.PlayOneShot(narration[2].narr[3]);
-        Explanation_subtitle.text = ex_text[data.lang][2][3];
+        Explanation_subtitle.text = ex_text[data.lang][2][4];
         yield return new WaitForSeconds(7f);
         audioSource.Stop();
         audioSource.PlayOneShot(narration[2].narr[4]);
-        Explanation_subtitle.text = ex_text[data.lang][2][4];
+        Explanation_subtitle.text = ex_text[data.lang][2][5];
         yield return new WaitForSeconds(7f);
         audioSource.PlayOneShot(narration[2].narr[5]);
-        Explanation_subtitle.text = ex_text[data.lang][2][5];
+        Explanation_subtitle.text = ex_text[data.lang][2][6];
         yield return new WaitForSeconds(10f);
         //yield return new WaitForSeconds(60f);
         movie.audioSource.Stop();

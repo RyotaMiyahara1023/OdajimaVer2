@@ -13,6 +13,7 @@ public class WebCam : MonoBehaviour
     public Text camera_num;
     public bool pause = false;
     public Quaternion baseRotation;
+    [SerializeField] Canvas canvas;
 
     IEnumerator Start()
     {
@@ -28,7 +29,23 @@ public class WebCam : MonoBehaviour
                 }
             }
             
-           webCam = new WebCamTexture(devices[selectCamera].name);
+            //if()
+            //webCam = new WebCamTexture(devices[selectCamera].name, (int)canvas.GetComponent<CanvasScaler>().referenceResolution.x, (int)canvas.GetComponent<CanvasScaler>().referenceResolution.y);
+            WebCamTexture webcamTextureOrg = new WebCamTexture(devices[selectCamera].name);
+            webCam = new WebCamTexture(devices[selectCamera].name, webcamTextureOrg.width, webcamTextureOrg.height);
+
+            /*var w = canvas.GetComponent<RectTransform>().sizeDelta.x;
+            var h = canvas.GetComponent<RectTransform>().sizeDelta.y;
+
+            var hiritsu = h / w;
+
+            if(w >= h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
+            if(w < h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);*/
+
+            var w = (float)webcamTextureOrg.width;
+            var h = (float)webcamTextureOrg.height;
+
+            RawImage.GetComponent<AspectRatioFitter>().aspectRatio = w / h;
 
             RawImage.texture = webCam;
         

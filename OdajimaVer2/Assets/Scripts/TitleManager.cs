@@ -7,6 +7,7 @@ public class TitleManager : MonoBehaviour
 {
     public GameObject chapter;
     public GameObject setting;
+    public GameObject Exit;
     Data data;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,8 @@ public class TitleManager : MonoBehaviour
     {
         chapter.SetActive(data.chapter_switch);
         setting.SetActive(data.setting_switch);
+        if(data.chapter_switch || data.setting_switch) Exit.SetActive(true);
+        else  Exit.SetActive(false);
     }
 
     public void GameScene()
