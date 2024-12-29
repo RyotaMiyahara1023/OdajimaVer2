@@ -109,6 +109,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if(data.chapter == 0) Camera.transform.position = new Vector3(Chapter0_ika.transform.position.x, Chapter0_ika.transform.position.y + 1f, Chapter0_ika.transform.position.z);
+
+        if(data.subtitle){
+            Explanation.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, Explanation.GetComponent<RectTransform>().sizeDelta.y);
+            Debug.Log("sizeDelta =" + Explanation.GetComponent<RectTransform>().sizeDelta);
+        }
     }
 
     public void Test(){
