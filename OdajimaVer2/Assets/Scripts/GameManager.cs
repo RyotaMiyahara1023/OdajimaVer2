@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<sound> list = new List<sound>();
     public GameObject[] Delete = new GameObject[5];
+    float pos;
 
     [System.Serializable] class sound
     {
@@ -102,6 +103,7 @@ public class GameManager : MonoBehaviour
         ex_text[1][2][5] = "Please enjoy the mellow and deep flavor that only wooden barrels can provide.";
         ex_text[1][2][6] = "Please take a look at the commemorative photo page.";
         RenderSettings.skybox = movie.back[data.chapter + 1];
+        if(data.subtitle) Explanation.SetActive(true);
         movie.Set_Movie();
     }
 
@@ -111,8 +113,8 @@ public class GameManager : MonoBehaviour
         if(data.chapter == 0) Camera.transform.position = new Vector3(Chapter0_ika.transform.position.x, Chapter0_ika.transform.position.y + 1f, Chapter0_ika.transform.position.z);
 
         if(data.subtitle){
-            Explanation.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, Explanation.GetComponent<RectTransform>().sizeDelta.y);
-            Debug.Log("sizeDelta =" + Explanation.GetComponent<RectTransform>().sizeDelta);
+            //Explanation.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, Explanation.GetComponent<RectTransform>().sizeDelta.y);
+            //Debug.Log("sizeDelta =" + Explanation.GetComponent<RectTransform>().sizeDelta);
         }
     }
 
@@ -123,7 +125,6 @@ public class GameManager : MonoBehaviour
         start_moive = false;
         RenderSettings.skybox = movie.back[data.chapter + 1];
         StartCoroutine("Chapter_" + data.chapter);
-        if(data.subtitle) Explanation.SetActive(true);
         Delete[2].SetActive(false);
         Delete[3].SetActive(false);
         Delete[4].SetActive(false);
@@ -139,10 +140,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(72f/24f + 1f/24f);
         animator[0].SetFloat("DustBox", 1.0f);
         yield return new WaitForSeconds(360f/24f + 1f/24f);*/
+        IEnumerator enumerator = Explanation_Set(data.lang, 0);
+        yield return enumerator;
         RenderSettings.skybox.SetFloat("_Rotation", 0f);
         audioSource.PlayDelayed(0.0000001f);
         audioSource.PlayOneShot(narration[0].narr[0]);
-        Explanation_subtitle.text = ex_text[data.lang][0][0];
+        //Explanation_subtitle.text = ex_text[data.lang][0][0];
         yield return new WaitForSeconds(10f);
         audioSource.PlayOneShot(narration[0].narr[1]);
         Explanation_subtitle.text = ex_text[data.lang][0][1];
@@ -220,13 +223,15 @@ public class GameManager : MonoBehaviour
         animator[1].SetFloat("Left_eye", 1.0f); //1280
         yield return new WaitForSeconds(161f/24f + 1f/24f);
         animator[1].SetFloat("Tonbi", 1.0f);*/  //1441
+        IEnumerator enumerator = Explanation_Set(data.lang, 1);
+        yield return enumerator;
         Movie_3D[1].transform.eulerAngles = new Vector3(0f, Camera.transform.localEulerAngles.y, 0f);
         Movie_3D[1].transform.position = new Vector3(-3*Mathf.Sin(Camera.transform.eulerAngles.y * Mathf.Deg2Rad),-4f, -3*Mathf.Cos(Camera.transform.eulerAngles.y * Mathf.Deg2Rad));
         movie.Chapter_1_Set();
         Camera.transform.position = new Vector3(0f, 0f, 0f);
         audioSource.PlayDelayed(0.0000001f);
         audioSource.PlayOneShot(narration[1].narr[0]);
-        Explanation_subtitle.text = ex_text[data.lang][1][0];
+        //Explanation_subtitle.text = ex_text[data.lang][1][0];
         yield return new WaitForSeconds(11f);
         RenderSettings.skybox = movie.back[0];
         RenderSettings.skybox.SetFloat("_Rotation", -(Movie_3D[1].transform.localEulerAngles.y + 180f));
@@ -321,6 +326,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Chapter_2()
     {
+        IEnumerator enumerator = Explanation_Set(data.lang, 2);
+        yield return enumerator;
         RenderSettings.skybox.SetFloat("_Rotation", 0f);
         Camera.transform.position = new Vector3(0f, 0f, 0f);
         RenderSettings.skybox = movie.back[0];
@@ -333,7 +340,7 @@ public class GameManager : MonoBehaviour
         animator[2].SetFloat("Taru", 1.0f);
         audioSource.PlayDelayed(0.0000001f);
         audioSource.PlayOneShot(narration[2].narr[0]);
-        Explanation_subtitle.text = ex_text[data.lang][2][0];
+        //Explanation_subtitle.text = ex_text[data.lang][2][0];
         yield return new WaitForSeconds(8f);
         Explanation_subtitle.text = ex_text[data.lang][2][1];
         yield return new WaitForSeconds(9f);
@@ -391,5 +398,44 @@ public class GameManager : MonoBehaviour
         movie.audioSource.Pause();
         if(start_moive) movie.Pause_Movie();
         pause_panel.SetActive(true);
+    }
+
+    IEnumerator Explanation_Set(int lang, int num)
+    {
+        if(data.subtitle) {
+            Explanation.SetActive(true);
+            Explanation.GetComponent<VerticalLayoutGroup>().childControlHeight = true;
+            Explanation.GetComponent<ContentSizeFitter>().enabled = true;
+            var len = ex_text[lang][num].Length;
+            Explanation.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
+            Explanation_subtitle.text = null;
+            var pos = 0f;
+            for(int i = 0; i < len; i++) {
+                IEnumerator enumerator = Set(lang, num, i);
+                yield return enumerator;
+                if(Explanation.GetComponent<RectTransform>().sizeDelta.y >= pos) pos = Explanation.GetComponent<RectTransform>().sizeDelta.y;
+                Debug.Log(pos + " , " + Explanation.GetComponent<RectTransform>().sizeDelta.y + " , " + ex_text[lang][num][i]);
+                //yield return new WaitForSeconds(2f);
+            }
+            Explanation_subtitle.text = ex_text[lang][num][0];
+            Explanation.GetComponent<VerticalLayoutGroup>().childControlHeight = false;
+            Explanation.GetComponent<ContentSizeFitter>().enabled = false;
+            Vector2 sd = Explanation.GetComponent<RectTransform>().sizeDelta;
+            Vector2 sdt = Explanation.GetComponent<RectTransform>().sizeDelta;
+            //Debug.Log(pos + " , " + sd);
+            sd.y = pos;
+            sdt.y = pos;
+            Explanation.GetComponent<RectTransform>().sizeDelta = sd;
+            Explanation_subtitle.GetComponent<RectTransform>().sizeDelta = sdt;
+            //Debug.Log(pos + " , " + sd);
+            Explanation.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, pos);
+        }
+        yield return null;
+    }
+
+    IEnumerator Set(int lang, int num, int i)
+    {
+        Explanation_subtitle.text = ex_text[lang][num][i];
+        yield return null;
     }
 }
