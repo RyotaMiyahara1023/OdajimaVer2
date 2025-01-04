@@ -20,7 +20,30 @@ public class WebCam : MonoBehaviour
         yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
         if (Application.HasUserAuthorization(UserAuthorization.WebCam))
         {
-            WebCamDevice[] devices = WebCamTexture.devices;
+            IEnumerator enumerator = Set();
+            yield return enumerator;
+            /*var hiritsu = h / w;
+
+            if(w >= h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
+            if(w < h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);*/
+
+            //var w = (float)webCam.width;
+            //var h = (float)webCam.height;
+            
+            //Debug.Log(webcamTextureOrg.width + " , " + webcamTextureOrg.height);
+            //RawImage.GetComponent<AspectRatioFitter>().aspectRatio = webCam.width / webCam.height;
+            RawImage.GetComponent<AspectRatioFitter>().aspectRatio = (float)webCam.width / webCam.height;
+
+            RawImage.texture = webCam;
+
+            //webcamTextureOrg.Stop();
+            Debug.Log(webCam.width + " , " + webCam.height);
+        }
+    }
+
+    IEnumerator Set()
+    {
+        WebCamDevice[] devices = WebCamTexture.devices;
 
             for (var i = 0; i < devices.Length; i++){
                 if(devices[i].isFrontFacing == false || ((devices[i].name).ToString()).Equals("背面カメラ")) {
@@ -32,26 +55,24 @@ public class WebCam : MonoBehaviour
             //if()
             //webCam = new WebCamTexture(devices[selectCamera].name, (int)canvas.GetComponent<CanvasScaler>().referenceResolution.x, (int)canvas.GetComponent<CanvasScaler>().referenceResolution.y);
             //WebCamTexture webcamTextureOrg = new WebCamTexture(devices[selectCamera].name);
-            //webCam = new WebCamTexture(devices[selectCamera].name, webcamTextureOrg.width, webcamTextureOrg.height);
-            webCam = new WebCamTexture(devices[selectCamera].name);
+        
+            //webcamTextureOrg.Play();
 
             var w = canvas.GetComponent<RectTransform>().sizeDelta.x;
             var h = canvas.GetComponent<RectTransform>().sizeDelta.y;
 
-            /*var hiritsu = h / w;
+            /*if(w >= h){
+                webCam = new WebCamTexture(devices[selectCamera].name, (int)w, ((int)w*webcamTextureOrg.height)/webcamTextureOrg.width);
+            }
+            else if(w < h){
+                webCam = new WebCamTexture(devices[selectCamera].name, ((int)h*webcamTextureOrg.width)/webcamTextureOrg.height, (int)h);
+            }*/
 
-            if(w >= h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
-            if(w < h) RawImage.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);*/
-
-            //var w = (float)webCam.width;
-            //var h = (float)webCam.height;
-
-            RawImage.GetComponent<AspectRatioFitter>().aspectRatio = w / h;
-
-            RawImage.texture = webCam;
-        
+            //webCam = new WebCamTexture(devices[selectCamera].name, webcamTextureOrg.width, webcamTextureOrg.height);
+            webCam = new WebCamTexture(devices[selectCamera].name);
             webCam.Play();
-        }
+
+            yield return null;
     }
 
     void Camera_Pause()
